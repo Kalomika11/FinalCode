@@ -1,0 +1,117 @@
+</html> 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sales Input Form</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body{
+            background-image: url(Report.jpg); 
+            background-size: cover; /* Cover the entire background with the image */
+            background-position: center; 
+        }
+        h1 {
+            font-family: Arial, sans-serif; /* Specify the font family */
+            text-align: center; /* Center the text horizontally */
+        } 
+    </style>
+</head>
+<body>
+    <div class="container mt-5 container-border">
+        <div class="row justify-content-center">
+            <div class="col-md-6" style="background-color: rgba(182, 238, 243, 0.66); position: relative; top: -20px; height: 680px;width: 450px;border-radius: 8px;"><br>
+                <h1 class="mb-4">Sales Report Input Form</h1>
+                <form  text-align: center; id="salesForm">
+
+                        <label for="saleDate">Sale Date:</label>
+                        <input type="date" class="form-control" id="saleDate" name="saleDate" required>
+                    
+                        <label for="saleTime">Time of Sale:</label>
+                        <input type="time" class="form-control" id="saleTime" name="saleTime" required>
+                    
+                        <label for="productName">Product Name:</label>
+                        <input type="text" class="form-control" id="productName" name="productName" required>
+                
+                        <label for="productId">Product ID:</label>
+                        <input type="text" class="form-control" id="productId" name="productId" required>
+                    
+                        <label for="category">Category of Product:</label>
+                        <input type="text" class="form-control" id="category" name="category" required>
+                 
+                        <label for="quantitySold">Quantity Sold:</label>
+                        <input type="number" class="form-control" id="quantitySold" name="quantitySold" required>
+                    
+                        <label for="unitPrice">Unit Price:</label>
+                        <input type="number" class="form-control" id="unitPrice" name="unitPrice" step="0.01" required> <br>
+
+                        <!-- <label for="totalRevenue">Total Revenue:</label>
+                        <input type="number" class="form-control" id="totalRevenue" name="totalRevenue" readonly> <br>
+         -->
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#salesForm').submit(function(event) {
+                event.preventDefault();
+                $.ajax({
+                    type: 'POST',
+                    url: 'http://localhost:3000/sales',
+                    data: $(this).serialize(),
+                    success: function(response) {
+                        console.log('Sales data submitted successfully');
+                        window.location.href = '/success.html'; // Redirect to success page
+                    },
+                    error: function(error) {
+                        console.error('Error submitting sales data:', error);
+                        alert('Error submitting sales data. Please try again.');
+                    }
+                });
+                var quantitySold = $('#quantitySold').val();
+                var unitPrice = $('#unitPrice').val();
+                var totalRevenue = quantitySold * unitPrice;
+
+                 // Set total revenue value
+                     $('#totalRevenue').val(totalRevenue);
+                var data = {
+                    saleDate: $('#saleDate').val(),
+                    saleTime: $('#saleTime').val(),
+                    productName: $('#productName').val(),
+                    productId: $('#productId').val(),
+                    category: $('#category').val(),
+                    quantitySold: quantitySold,
+                    unitPrice: unitPrice,
+                    totalRevenue: totalRevenue
+                    // Capture other form inputs here
+                };
+
+                // Store data in localStorage
+                localStorage.setItem('saleData', JSON.stringify(data));
+                var salesData = JSON.parse(localStorage.getItem('salesData')) || [];
+
+                 // Add new data to the array
+                 salesData.push(data);
+
+                 // Store updated array back to localStorage
+                localStorage.setItem('salesData', JSON.stringify(data));
+
+                // Redirect to success.html after at least 5 entries
+               if (salesData.length >= 5) {
+                            window.location.href = 'success.html';
+                } else {
+    // Clear form for next entry
+             $('#salesForm')[0].reset();
+              }
+                // Redirect to success.html
+                window.location.href = 'success.html';
+            });
+        });
+    </script>
+ </body>
+</html>

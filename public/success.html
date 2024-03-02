@@ -1,0 +1,151 @@
+ <!-- <!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Success Page</title>
+        <style>
+            table {
+                width: 100%;
+                border-collapse: collapse;
+            }
+    
+            th, td {
+                border: 1px solid black;
+                padding: 8px;
+                text-align: left;
+            }
+    
+            th {
+                background-color: #87d7f9;
+            }  
+            body {
+                text-align: center;
+                background-color: #a6ddf9;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>Data Inserted Successfully....!!!!</h1>
+        <div id="salesDataContainer"></div>
+        <button onclick="viewSalesData()">View Sales Data</button>
+        <script>
+            function viewSalesData() {
+                console.log("Fetching sales data...");
+                fetch('/sales')
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log("Sales data received:", data);
+                        // Create table to display data
+                        var table = document.createElement('table');
+                        var headerRow = table.insertRow();
+                        Object.keys(data[0]).forEach(function(key) {
+                            var headerCell = document.createElement('th');
+                            headerCell.textContent = key;
+                            headerRow.appendChild(headerCell);
+                        });
+        
+                        data.forEach(function(sale) {
+                            var dataRow = table.insertRow();
+                            Object.values(sale).forEach(function(value) {
+                                var dataCell = document.createElement('td');
+                                dataCell.textContent = value;
+                                dataRow.appendChild(dataCell);
+                            });
+                        });
+        
+                        // Clear previous data
+                        document.getElementById('salesDataContainer').innerHTML = '';
+        
+                        // Append table to container
+                        document.getElementById('salesDataContainer').appendChild(table);
+                    })
+                    .catch(error => console.error('Error fetching sales data:', error));
+            }
+        </script>
+    </body>
+    
+    </html>
+     
+ -->
+
+ <!DOCTYPE html>
+ <html lang="en">
+ <head>
+     <meta charset="UTF-8">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <title>Success Page</title>
+     <style>
+         table {
+             width: 100%;
+             border-collapse: collapse;
+         }
+ 
+         th, td {
+             border: 1px solid black;
+             padding: 8px;
+             text-align: left;
+         }
+ 
+         th {
+             background-color: #87d7f9;
+         }  
+         body {
+             
+             text-align: center; /* Center align the contents of the body */
+             background-color: #a6ddf9;
+         }
+ 
+         #showSalesData {
+             margin-top: 20px; /* Add some space between the heading and the button */
+             background-color: #fafaa4;
+             
+         }
+     </style>
+ </head>
+ <body>
+     <h1 style="text-align: center;">Data Inserted Successfully....!!!!</h1><br>
+     <button id="showSalesData" style="text-align: center;">Show Sales Data</button><br><br>
+     <div id="salesDataContainer"></div>
+ 
+     <script>
+         document.getElementById('showSalesData').addEventListener('click', function() {
+             // Fetch sales data from the server
+             fetch('/sales')
+                 .then(response => response.json())
+                 .then(data => {
+                     const salesDataContainer = document.getElementById('salesDataContainer');
+                     salesDataContainer.innerHTML = ''; // Clear previous data
+ 
+                     // Create the table element
+                     const table = document.createElement('table');
+ 
+                     // Create table header row
+                     const headerRow = document.createElement('tr');
+                     Object.keys(data[0]).forEach(key => {
+                         const headerCell = document.createElement('th');
+                         headerCell.textContent = key.toUpperCase();
+                         headerRow.appendChild(headerCell);
+                     });
+                     table.appendChild(headerRow);
+ 
+                     // Create table data rows
+                     data.forEach(sale => {
+                         const dataRow = document.createElement('tr');
+                         Object.values(sale).forEach(value => {
+                             const dataCell = document.createElement('td');
+                             dataCell.textContent = value;
+                             dataRow.appendChild(dataCell);
+                         });
+                         table.appendChild(dataRow);
+                     });
+ 
+                     // Append table to container
+                     salesDataContainer.appendChild(table);
+                 })
+                 .catch(error => console.error('Error fetching sales data:', error));
+         });
+     </script>
+ </body>
+ </html>
+ 
