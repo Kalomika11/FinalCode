@@ -1,17 +1,19 @@
 version: '3'
-services:
-  express-server:
+services:  # starting the services
+  express-server:   # This is Front-end Server called "express-server"
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile  # Use the Dockerfile named 'Dockerfile' in the build context
     ports:
       - 3000:3000
     depends_on:
-     - mongo
+     - mongo    # This service depends on the back-end 'mongo' service
+    environment:
+      - MONGODB_URI=mongodb://mongo:27017/sales # Set the MongoDB URI environment variable
  
-  mongo:
-    image: mongo
+  mongo: # This is back-end Server called "express-server"
+    image: mongo  # Use the official MongoDB image from Docker Hub
     ports:
       - 27017:27017
-    volumes:
-      - ./data:/data/KaushikDB
+    volumes: # Mount volumes for the service
+      - ./data:/data/sales
