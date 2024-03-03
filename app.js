@@ -4,7 +4,7 @@ var path = require("path");
 
 const mongoose = require('mongoose');
 
-mongoose.connect('mongodb://mongo:27017/KaushikDB');
+mongoose.connect('mongodb://mongo:27017/sales');
 var db = mongoose.connection;
 db.on('error', console.log.bind(console, "connection error"));
 db.once('open', function (callback) {
